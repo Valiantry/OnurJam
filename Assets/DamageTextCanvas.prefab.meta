@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/DamageTextCanvas.prefab.meta
 guid: cfc9b6a8a72ad1e45b11dc6e253cbc46
+=======
+guid: 5621f25642749c84eb1f72204e3462e9
+>>>>>>> 8cc8e7c65b5fe59e8f563e7919a43090b1ab3ef1:Assets/EnemyBasic.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

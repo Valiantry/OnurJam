@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public float MoveSpeed { get; set; }   
     public EnemyHealth EnemyHealth { get; set; }
 
+<<<<<<< HEAD
     public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(currentWaypointIndex);
 
     int lastWaypointIndex;
@@ -36,6 +37,19 @@ public class Enemy : MonoBehaviour
         currentWaypointIndex = 0;
         moveSpeed = MoveSpeed;
         _lastPointPosition = transform.position;
+=======
+    public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
+    public Vector2 dir;
+    int lastWaypointIndex;
+
+    private int _currentWaypointIndex;
+    private EnemyHealth _enemyHealth;
+
+    private void Start()
+    {
+        _currentWaypointIndex = 0;
+        _enemyHealth = GetComponent<EnemyHealth>();
+>>>>>>> 8cc8e7c65b5fe59e8f563e7919a43090b1ab3ef1
     }
 
     private void Update()
@@ -67,9 +81,9 @@ public class Enemy : MonoBehaviour
     private void UpdateCurrentPointIndex()
     {
         int lastWaypointIndex = Waypoint.Points.Length - 1;
-        if (currentWaypointIndex < lastWaypointIndex)
+        if (_currentWaypointIndex < lastWaypointIndex)
         {
-            currentWaypointIndex++;
+            _currentWaypointIndex++;
         }
         else
         {
@@ -82,11 +96,15 @@ public class Enemy : MonoBehaviour
     private void EndPointReached()
     {
         OnEndReached?.Invoke();
+<<<<<<< HEAD
+=======
+        _enemyHealth.ResetHealth();
+>>>>>>> 8cc8e7c65b5fe59e8f563e7919a43090b1ab3ef1
         ObjectPooler.ReturnToPool(gameObject);
     }
 
     public void ResetEnemy()
     {
-        currentWaypointIndex = 0;
+        _currentWaypointIndex = 0;
     }
 }
