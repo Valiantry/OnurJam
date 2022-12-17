@@ -12,39 +12,46 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     //[SerializeField] private Waypoint waypoint;
     public Waypoint Waypoint { get; set; }
+    public float MoveSpeed { get; set; }   
+    public EnemyHealth EnemyHealth { get; set; }
 
     public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(currentWaypointIndex);
-    public Vector2 dir;
+
     int lastWaypointIndex;
 
     private int currentWaypointIndex;
-    private EnemyHealth enemyHealth;
+    private Vector3 _lastPointPosition;
+
+    private EnemyHealth _enemyHealth;
+    private SpriteRenderer _spriteRenderer;
 
     private void Start()
     {
+        _enemyHealth = GetComponent<EnemyHealth>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        EnemyHealth = GetComponent<EnemyHealth>();
+
+
+
         currentWaypointIndex = 0;
-        enemyHealth = GetComponent<EnemyHealth>();
+        moveSpeed = MoveSpeed;
+        _lastPointPosition = transform.position;
     }
 
-    public void Update()
+    private void Update()
     {
         Move();
         if (CurrentPositionReached())
         {
             UpdateCurrentPointIndex();
-           
+
         }
-        dir = CurrentPointPosition - transform.position;
-        //BUNU PUBLIC YAPÇAN
-
-        //Debug.Log();
+        //Debug.Log(lastWaypointIndex);
     }
-
-    public void Move()
+    private void Move()
     {
 
         transform.position = Vector3.MoveTowards(transform.position, CurrentPointPosition, moveSpeed * Time.deltaTime);
-
     }
 
     private bool CurrentPositionReached()
@@ -75,7 +82,6 @@ public class Enemy : MonoBehaviour
     private void EndPointReached()
     {
         OnEndReached?.Invoke();
-        enemyHealth.ResetHealth();
         ObjectPooler.ReturnToPool(gameObject);
     }
 

@@ -14,7 +14,7 @@ public class DamageTextManager : MonoBehaviour
     }
     void Start()
     {
-        Pooler =GetComponent<ObjectPooler>();
+        Pooler = GetComponent<ObjectPooler>();
     }
 
     
