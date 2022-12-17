@@ -30,7 +30,7 @@ public class EnemyHealth : MonoBehaviour
             DealDamage(5f);
             Debug.Log(CurrentHealth);
         }
-        healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, CurrentHealth / maxHealth, Time.deltaTime * 1f);
+        healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, CurrentHealth / maxHealth, Time.deltaTime * 2f);
     }
     // Update is called once per frame
     private void CreateHealthBar()

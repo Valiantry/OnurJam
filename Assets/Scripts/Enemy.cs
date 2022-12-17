@@ -13,17 +13,17 @@ public class Enemy : MonoBehaviour
     //[SerializeField] private Waypoint waypoint;
     public Waypoint Waypoint { get; set; }
 
-    public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(currentWaypointIndex);
+    public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
     public Vector2 dir;
     int lastWaypointIndex;
 
-    private int currentWaypointIndex;
-    private EnemyHealth enemyHealth;
+    private int _currentWaypointIndex;
+    private EnemyHealth _enemyHealth;
 
     private void Start()
     {
-        currentWaypointIndex = 0;
-        enemyHealth = GetComponent<EnemyHealth>();
+        _currentWaypointIndex = 0;
+        _enemyHealth = GetComponent<EnemyHealth>();
     }
 
     public void Update()
@@ -60,9 +60,9 @@ public class Enemy : MonoBehaviour
     private void UpdateCurrentPointIndex()
     {
         int lastWaypointIndex = Waypoint.Points.Length - 1;
-        if (currentWaypointIndex < lastWaypointIndex)
+        if (_currentWaypointIndex < lastWaypointIndex)
         {
-            currentWaypointIndex++;
+            _currentWaypointIndex++;
         }
         else
         {
@@ -75,12 +75,12 @@ public class Enemy : MonoBehaviour
     private void EndPointReached()
     {
         OnEndReached?.Invoke();
-        enemyHealth.ResetHealth();
+        _enemyHealth.ResetHealth();
         ObjectPooler.ReturnToPool(gameObject);
     }
 
     public void ResetEnemy()
     {
-        currentWaypointIndex = 0;
+        _currentWaypointIndex = 0;
     }
 }
