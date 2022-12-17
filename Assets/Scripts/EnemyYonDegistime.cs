@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class EnemyYonDegistime : MonoBehaviour
 {
-    public Sprite sola, saga, yukariya, asagiya;
-    // Start is called before the first frame update
+    Vector2 temp;
 
-    // Update is called once per frame
+    public Sprite sola, saga, yukariya, asagiya;
     void Update()
     {
         Sprite[] gay = { sola, saga, yukariya, asagiya };
         GetComponent<SpriteRenderer>().sprite = gay[Random r];
+
+        temp = transform.position;
+
 
     }
 
@@ -31,24 +33,5 @@ public class EnemyYonDegistime : MonoBehaviour
                 GetComponent<SpriteRenderer>().sprite = saga;
             }
         }
-    }
-
-    void dikeyCevir()
-    {
-        Rigidbody2D rigidbody=GetComponent<Rigidbody2D>();
-        Vector3 velocity = rigidbody.velocity;
-
-        if (velocity.y>velocity.x)
-        {
-            if (velocity.y<0)
-            {
-                GetComponent<SpriteRenderer>().sprite = asagiya;
-            }
-            else if (velocity.y>0)
-            {
-                GetComponent<SpriteRenderer>().sprite = yukariya;
-            }
-        }
-
     }
 }
