@@ -6,28 +6,34 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public static Action OnEnemyKilled;
-    
+    public static Action<Enemy> OnEnemyKilled;
+    public static Action<Enemy> OnEnemyHit;
+
     [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private Transform barPosition;
+
     [SerializeField] private float initialHealth = 10f;
     [SerializeField] private float maxHealth = 10f;
 
     public float CurrentHealth { get; set; }
 
     private Image healthBar;
-    // Start is called before the first frame update
+    private Enemy _enemy;
+
+
     void Start()
     {
         CreateHealthBar();
         CurrentHealth = initialHealth;
+
+        _enemy = GetComponent<Enemy>();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            DealDamage(5f);
+            DealDamage(1f);
             Debug.Log(CurrentHealth);
         }
         healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, CurrentHealth / maxHealth, Time.deltaTime * 2f);
@@ -42,13 +48,17 @@ public class EnemyHealth : MonoBehaviour
         healthBar = container.FillAmountImage;
     }
 
-    public void DealDamage(float damageRecieved)
+    public void DealDamage(float damageReceived)
     {
-        CurrentHealth -= damageRecieved;
+        CurrentHealth -= damageReceived;
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
             Die();
+        }
+        else
+        {
+            OnEnemyHit?.Invoke(_enemy);
         }
     }
     public void ResetHealth()
@@ -59,7 +69,7 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         ResetHealth();
-        OnEnemyKilled?.Invoke();
+        OnEnemyKilled?.Invoke(_enemy);
         ObjectPooler.ReturnToPool(gameObject);
     }
 }

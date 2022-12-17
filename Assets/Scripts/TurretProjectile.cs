@@ -28,8 +28,8 @@ public class TurretProjectile : MonoBehaviour
         }
         if (Time.time > _nextAttackTime)
         {
-            if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null && _turret.CurrentEnemyTarget.EnemyHealth.CurrentHealth > 0f)
-        {
+            if (_turret.CurrentEnemyTarget != null && _currentProjectileLoaded != null && _turret.CurrentEnemyTarget.GetComponent<EnemyHealth>().CurrentHealth > 0f)
+            {
                 _currentProjectileLoaded.transform.parent = null;
                 _currentProjectileLoaded.SetEnemy(_turret.CurrentEnemyTarget);
             }

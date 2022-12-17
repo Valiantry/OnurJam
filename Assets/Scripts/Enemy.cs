@@ -1,26 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 
 public class Enemy : MonoBehaviour
 {
-    public static Action OnEndReached;
+    public static Action <Enemy> OnEndReached;
+
 
     [SerializeField] private float moveSpeed = 3f;
-    //[SerializeField] private Waypoint waypoint;
+
+    public float MoveSpeed { get; set; }
+
     public Waypoint Waypoint { get; set; }
-    public float MoveSpeed { get; set; }   
-    public EnemyHealth EnemyHealth { get; set; }
+    public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
 
-<<<<<<< HEAD
-    public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(currentWaypointIndex);
-
-    int lastWaypointIndex;
-
-    private int currentWaypointIndex;
+    private int _currentWaypointIndex;
     private Vector3 _lastPointPosition;
 
     private EnemyHealth _enemyHealth;
@@ -30,51 +25,60 @@ public class Enemy : MonoBehaviour
     {
         _enemyHealth = GetComponent<EnemyHealth>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        EnemyHealth = GetComponent<EnemyHealth>();
 
-
-
-        currentWaypointIndex = 0;
-        moveSpeed = MoveSpeed;
-        _lastPointPosition = transform.position;
-=======
-    public Vector3 CurrentPointPosition => Waypoint.GetWaypointPosition(_currentWaypointIndex);
-    public Vector2 dir;
-    int lastWaypointIndex;
-
-    private int _currentWaypointIndex;
-    private EnemyHealth _enemyHealth;
-
-    private void Start()
-    {
         _currentWaypointIndex = 0;
-        _enemyHealth = GetComponent<EnemyHealth>();
->>>>>>> 8cc8e7c65b5fe59e8f563e7919a43090b1ab3ef1
+        MoveSpeed = moveSpeed;
+        _lastPointPosition = transform.position;
     }
 
     private void Update()
     {
         Move();
-        if (CurrentPositionReached())
+        Rotate();
+
+        if (CurrentPointPositionReached())
         {
             UpdateCurrentPointIndex();
-
         }
-        //Debug.Log(lastWaypointIndex);
     }
+
     private void Move()
     {
-
-        transform.position = Vector3.MoveTowards(transform.position, CurrentPointPosition, moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position,
+            CurrentPointPosition, MoveSpeed * Time.deltaTime);
     }
 
-    private bool CurrentPositionReached()
+    public void StopMovement()
+    {
+        MoveSpeed = 0f;
+    }
+
+    public void ResumeMovement()
+    {
+        MoveSpeed = moveSpeed;
+    }
+
+    private void Rotate()
+    {
+        if (CurrentPointPosition.x > _lastPointPosition.x)
+        {
+            _spriteRenderer.flipX = false;
+        }
+        else
+        {
+            _spriteRenderer.flipX = true;
+        }
+    }
+
+    private bool CurrentPointPositionReached()
     {
         float distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
         if (distanceToNextPointPosition < 0.1f)
         {
+            _lastPointPosition = transform.position;
             return true;
         }
+
         return false;
     }
 
@@ -91,15 +95,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
-
     private void EndPointReached()
     {
-        OnEndReached?.Invoke();
-<<<<<<< HEAD
-=======
+        OnEndReached?.Invoke(this);
         _enemyHealth.ResetHealth();
->>>>>>> 8cc8e7c65b5fe59e8f563e7919a43090b1ab3ef1
         ObjectPooler.ReturnToPool(gameObject);
     }
 

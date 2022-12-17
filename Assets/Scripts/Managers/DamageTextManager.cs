@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageTextManager : MonoBehaviour
+public class DamageTextManager : Singleton<DamageTextManager> 
 {
     public ObjectPooler Pooler { get; set; }
 
@@ -10,7 +10,7 @@ public class DamageTextManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance= this;
+        Instance = this;
     }
     void Start()
     {
